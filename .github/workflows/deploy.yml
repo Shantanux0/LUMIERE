@@ -45,7 +45,7 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Deploy
-        uses: jamesgeorge007/github-pages-deploy-action@v4.5.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: FurFrontend/dist
           branch: gh-pages

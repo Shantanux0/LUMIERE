@@ -3,13 +3,14 @@ import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/products/ProductCard";
-import { products, categories } from "@/data/products";
+import { categories } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SlidersHorizontal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import heroImage from "@/assets/hero-living-room.jpg";
+import { useProducts } from "@/hooks/useProducts";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -21,6 +22,9 @@ const fadeInUp = {
 };
 
 const Products = () => {
+  const { data: productsData } = useProducts();
+  const products = productsData || [];
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -45,7 +49,7 @@ const Products = () => {
         );
       return matchesCategory && matchesPrice && matchesMaterial;
     });
-  }, [selectedCategories, priceRange, selectedMaterials]);
+  }, [selectedCategories, priceRange, selectedMaterials, products]);
 
   const toggleCategory = (categoryId: string) => {
     setSelectedCategories((prev) =>

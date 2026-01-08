@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import api from '@/lib/api';
 
-interface User {
-    id: string;
+export interface User {
+    id: number;
     email: string;
     firstName: string;
     lastName: string;
@@ -12,7 +13,8 @@ interface User {
 interface AuthState {
     user: User | null;
     isAuthenticated: boolean;
-    login: (email: string, password: string, firstName?: string, lastName?: string) => void;
+    login: (email: string, password: string) => Promise<void>;
+    register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
     logout: () => void;
     updateProfile: (updates: Partial<User>) => void;
 }
@@ -22,15 +24,28 @@ export const useAuthStore = create<AuthState>()(
         (set) => ({
             user: null,
             isAuthenticated: false,
-            login: (email, password, firstName, lastName) => {
-                // Mock login - in production, this would call an API
-                const user: User = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    email,
-                    firstName: firstName || email.split('@')[0],
-                    lastName: lastName || 'User',
-                };
-                set({ user, isAuthenticated: true });
+            login: async (email, password) => {
+                try {
+                    const response = await api.post<User>('/auth/login', { email, password });
+                    set({ user: response.data, isAuthenticated: true });
+                } catch (error) {
+                    console.error('Login failed:', error);
+                    throw error;
+                }
+            },
+            register: async (email, password, firstName, lastName) => {
+                try {
+                    const response = await api.post<User>('/auth/register', {
+                        email,
+                        password,
+                        firstName,
+                        lastName
+                    });
+                    set({ user: response.data, isAuthenticated: true });
+                } catch (error) {
+                    console.error('Registration failed:', error);
+                    throw error;
+                }
             },
             logout: () => {
                 set({ user: null, isAuthenticated: false });

@@ -1,0 +1,6 @@
+com/lumiere/product/controller/ProductController.class
+com/lumiere/product/entity/Product.class
+com/lumiere/product/entity/Product$ProductBuilder.class
+com/lumiere/product/service/ProductService.class
+com/lumiere/product/repository/ProductRepository.class
+com/lumiere/product/ProductServiceApplication.class

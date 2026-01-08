@@ -35,28 +35,37 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const login = useAuthStore((state) => state.login);
+  const { login, register } = useAuthStore();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isSignUp) {
-      login(email, password, firstName, lastName);
+    try {
+      if (isSignUp) {
+        await register(email, password, firstName, lastName);
+        toast({
+          title: "Account created!",
+          description: "Welcome to LUMIÈRE. Your account has been created successfully.",
+        });
+      } else {
+        await login(email, password);
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+      }
+      navigate("/profile");
+    } catch (error: any) {
+      console.error("Authentication Error:", error);
+      const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "An error occurred during authentication.";
       toast({
-        title: "Account created!",
-        description: "Welcome to LUMIÈRE. Your account has been created successfully.",
-      });
-    } else {
-      login(email, password);
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully signed in.",
+        variant: "destructive",
+        title: "Authentication failed",
+        description: errorMessage,
       });
     }
-
-    navigate("/profile");
   };
 
   return (

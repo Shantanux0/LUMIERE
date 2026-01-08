@@ -2,20 +2,26 @@ import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/store/cart";
 import { ShoppingBag, Minus, Plus, ArrowLeft, Check } from "lucide-react";
 import ProductCard from "@/components/products/ProductCard";
 import { useToast } from "@/hooks/use-toast";
+import { useProduct, useProducts } from "@/hooks/useProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { toast } = useToast();
-  const product = products.find((p) => p.id === id);
+  const { data: product, isLoading } = useProduct(id || "");
+  const { data: allProducts } = useProducts();
+
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(0);
   const addItem = useCart((state) => state.addItem);
+
+  if (isLoading) {
+    return <div className="min-h-screen bg-background flex items-center justify-center">Loading...</div>;
+  }
 
   if (!product) {
     return (
@@ -30,7 +36,7 @@ const ProductDetail = () => {
     );
   }
 
-  const relatedProducts = products
+  const relatedProducts = (allProducts || [])
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 
@@ -119,11 +125,10 @@ const ProductDetail = () => {
                       <button
                         key={color}
                         onClick={() => setSelectedColor(index)}
-                        className={`px-4 py-2 text-sm border rounded transition-all ${
-                          selectedColor === index
+                        className={`px-4 py-2 text-sm border rounded transition-all ${selectedColor === index
                             ? "border-foreground bg-foreground text-background"
                             : "border-border hover:border-foreground/50"
-                        }`}
+                          }`}
                       >
                         {color}
                       </button>

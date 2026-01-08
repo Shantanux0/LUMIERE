@@ -6,9 +6,10 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/products/ProductCard";
 import CategoryCard from "@/components/products/CategoryCard";
-import { categories, featuredProducts } from "@/data/products";
+import { categories } from "@/data/products";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-living-room.jpg";
+import { useProducts } from "@/hooks/useProducts";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -30,6 +31,8 @@ const staggerContainer: Variants = {
 };
 
 const Index = () => {
+  const { data: products } = useProducts();
+  const featuredProducts = products?.filter(p => p.featured) || [];
   return (
     <div className="min-h-screen bg-background">
       <Header />

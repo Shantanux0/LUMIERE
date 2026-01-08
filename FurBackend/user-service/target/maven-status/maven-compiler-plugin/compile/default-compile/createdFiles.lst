@@ -1,0 +1,8 @@
+com/lumiere/user/UserServiceApplication.class
+com/lumiere/user/repository/UserRepository.class
+com/lumiere/user/entity/User$UserBuilder.class
+com/lumiere/user/entity/User.class
+com/lumiere/user/controller/AuthController$LoginRequest.class
+com/lumiere/user/controller/UserController.class
+com/lumiere/user/service/UserService.class
+com/lumiere/user/controller/AuthController.class

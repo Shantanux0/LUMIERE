@@ -1,6 +1,7 @@
 package com.lumiere.order.service;
 
 import com.lumiere.order.entity.Order;
+import com.lumiere.order.entity.OrderStatus;
 import com.lumiere.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

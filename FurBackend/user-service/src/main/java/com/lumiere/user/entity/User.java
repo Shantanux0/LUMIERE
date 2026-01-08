@@ -19,8 +19,6 @@ public class User {
     @Column(unique = true)
     private String email;
     
-    @jakarta.validation.constraints.Size(min = 8, message = "Password must be at least 8 characters")
-    @jakarta.validation.constraints.Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must contain uppercase, lowercase, number and special character")
     private String password;
     
     private String firstName;

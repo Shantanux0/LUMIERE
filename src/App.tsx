@@ -8,6 +8,7 @@ import Products from "./pages/Products";
 import Collections from "./pages/Collections";
 import About from "./pages/About";
 import Journal from "./pages/Journal";
+import JournalArticle from "./pages/JournalArticle";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -55,6 +56,7 @@ const App = () => (
                     <Route path="/collections" element={<Collections />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/journal" element={<Journal />} />
+                    <Route path="/journal/:id" element={<JournalArticle />} />
                     <Route path="/support" element={<Support />} />
                     <Route path="/shipping" element={<Shipping />} />
                     <Route path="/care-guide" element={<CareGuide />} />

@@ -231,9 +231,11 @@ const Index = () => {
                   part of its heritage, growing more beautiful with each passing year.
                 </motion.p>
                 <motion.div variants={fadeInUp}>
-                  <Button variant="minimal" className="gap-2">
-                    Discover Our Story <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  <Link to="/about">
+                    <Button variant="minimal" className="gap-2">
+                      Discover Our Story <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>

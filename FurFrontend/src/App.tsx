@@ -21,6 +21,8 @@ import FAQ from "./pages/FAQ";
 import Trade from "./pages/Trade";
 import GiftCards from "./pages/GiftCards";
 import ScrollToTop from "./components/ScrollToTop";
+import BackgroundMusic from "./components/BackgroundMusic";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import Sustainability from "./pages/Sustainability";
 import Careers from "./pages/Careers";
 import Press from "./pages/Press";
@@ -83,6 +85,8 @@ const App = () => (
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                 </Routes>
+                <BackgroundMusic />
+                <ScrollToTopButton />
             </BrowserRouter>
         </TooltipProvider>
     </QueryClientProvider>

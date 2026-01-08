@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/store/cart";
 import { ArrowLeft, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/lib/api";
+import { useAuthStore } from "@/store/authStore";
 
 const Checkout = () => {
   const { items, getTotal, clearCart } = useCart();
@@ -15,19 +17,50 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
+  const { user } = useAuthStore();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Authentication required",
+        description: "Please login to place an order.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
-    
-    // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsComplete(true);
-    clearCart();
-    toast({
-      title: "Order Placed!",
-      description: "Thank you for your purchase. You will receive a confirmation email shortly.",
-    });
+
+    try {
+      const orderPayload = {
+        userId: user.id,
+        totalAmount: getTotal(),
+        orderItems: items.map(item => ({
+          productId: item.product.id,
+          price: item.product.price,
+          quantity: item.quantity
+        }))
+      };
+
+      await api.post('/orders', orderPayload);
+
+      setIsComplete(true);
+      clearCart();
+      toast({
+        title: "Order Placed!",
+        description: "Thank you for your purchase. You will receive a confirmation email shortly.",
+      });
+    } catch (error) {
+      console.error("Order failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Order Failed",
+        description: "There was an issue placing your order. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0 && !isComplete) {

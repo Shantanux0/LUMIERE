@@ -22,7 +22,10 @@ public class Order {
     private String orderNumber;
     private String userId; // Linking to User Service ID
     private BigDecimal totalAmount;
-    private String status; // PENDING, COMPLETED, CANCELLED
+    
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+    private java.time.LocalDateTime orderDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;

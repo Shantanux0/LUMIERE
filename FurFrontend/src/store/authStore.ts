@@ -21,7 +21,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             user: null,
             isAuthenticated: false,
             login: async (email, password) => {
@@ -50,10 +50,20 @@ export const useAuthStore = create<AuthState>()(
             logout: () => {
                 set({ user: null, isAuthenticated: false });
             },
-            updateProfile: (updates) => {
-                set((state) => ({
-                    user: state.user ? { ...state.user, ...updates } : null,
-                }));
+            updateProfile: async (updates) => {
+                const currentUser = get().user;
+                if (!currentUser) return;
+
+                try {
+                    const response = await api.put<User>(`/users/${currentUser.id}`, updates);
+                    set((state) => ({
+                        user: response.data,
+                    }));
+                } catch (error) {
+                    console.error("Failed to update profile", error);
+                    // Optimistic update fallback or error handling could be here
+                    // For now, we update local state if API fails is NOT recommended, so we rely on API response
+                }
             },
         }),
         {

@@ -18,7 +18,8 @@ public class OrderService {
 
     public void placeOrder(Order order) {
         order.setOrderNumber(UUID.randomUUID().toString());
-        order.setStatus("PENDING");
+        order.setStatus(OrderStatus.PENDING);
+        order.setOrderDate(java.time.LocalDateTime.now());
         orderRepository.save(order);
         log.info("Order placed successfully: {}", order.getOrderNumber());
     }

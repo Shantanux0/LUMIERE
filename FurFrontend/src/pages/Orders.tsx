@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import api from "@/lib/api";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -7,21 +8,31 @@ import { useAuthStore } from "@/store/authStore";
 import { ArrowLeft, Package } from "lucide-react";
 
 const Orders = () => {
-    const { isAuthenticated } = useAuthStore();
+    const { user, isAuthenticated } = useAuthStore();
     const navigate = useNavigate();
+    const [orders, setOrders] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (!isAuthenticated) {
             navigate("/login");
+            return;
         }
-    }, [isAuthenticated, navigate]);
 
-    // Mock orders data
-    const orders = [
-        { id: "ORD-2026-001", date: "Jan 5, 2026", status: "Delivered", total: "$2,450", items: 2 },
-        { id: "ORD-2025-142", date: "Dec 28, 2025", status: "In Transit", total: "$890", items: 1 },
-        { id: "ORD-2025-128", date: "Dec 15, 2025", status: "Delivered", total: "$3,200", items: 3 },
-    ];
+        const fetchOrders = async () => {
+            if (!user) return;
+            try {
+                const response = await api.get(`/orders/user/${user.id}`);
+                setOrders(response.data);
+            } catch (error) {
+                console.error("Failed to fetch orders:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchOrders();
+    }, [isAuthenticated, navigate, user]);
 
     return (
         <div className="min-h-screen bg-background">
@@ -53,12 +64,12 @@ const Orders = () => {
                                     >
                                         <div className="flex items-start justify-between mb-4">
                                             <div>
-                                                <h3 className="font-serif text-xl mb-1">{order.id}</h3>
-                                                <p className="text-sm text-muted-foreground">{order.date}</p>
+                                                <h3 className="font-serif text-xl mb-1">#{order.orderNumber.substring(0, 8).toUpperCase()}</h3>
+                                                <p className="text-sm text-muted-foreground">{new Date(order.orderDate).toLocaleDateString()}</p>
                                             </div>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Delivered'
-                                                    ? 'bg-green-100 text-green-800'
-                                                    : 'bg-blue-100 text-blue-800'
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Delivered' || order.status === 'COMPLETED'
+                                                ? 'bg-green-100 text-green-800'
+                                                : order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
                                                 }`}>
                                                 {order.status}
                                             </span>
@@ -67,11 +78,10 @@ const Orders = () => {
                                             <div className="flex items-center gap-6 text-sm text-muted-foreground">
                                                 <span className="flex items-center gap-2">
                                                     <Package className="w-4 h-4" />
-                                                    {order.items} {order.items === 1 ? 'item' : 'items'}
+                                                    {order.orderItems?.length || 0} items
                                                 </span>
-                                                <span className="font-medium text-foreground">{order.total}</span>
+                                                <span className="font-medium text-foreground">${order.totalAmount}</span>
                                             </div>
-                                            <button className="text-sm font-medium hover:underline">View Details</button>
                                         </div>
                                     </motion.div>
                                 ))}

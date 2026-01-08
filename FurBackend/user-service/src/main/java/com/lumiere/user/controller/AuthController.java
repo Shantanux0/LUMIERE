@@ -16,7 +16,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User register(@RequestBody User user) {
+    public User register(@RequestBody @jakarta.validation.Valid User user) {
         return userService.registerUser(user);
     }
 

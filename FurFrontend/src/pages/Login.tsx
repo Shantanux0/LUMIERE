@@ -44,6 +44,15 @@ const Login = () => {
 
     try {
       if (isSignUp) {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(password)) {
+          toast({
+            variant: "destructive",
+            title: "Weak Password",
+            description: "Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.",
+          });
+          return;
+        }
         await register(email, password, firstName, lastName);
         toast({
           title: "Account created!",
@@ -153,6 +162,48 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+
+                {isSignUp && password.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    <div className="flex gap-1 h-1">
+                      {[1, 2, 3, 4].map((level) => {
+                        const strength =
+                          (password.length >= 8 ? 1 : 0) +
+                          (/[A-Z]/.test(password) ? 1 : 0) +
+                          (/[0-9]/.test(password) ? 1 : 0) +
+                          (/[^A-Za-z0-9]/.test(password) ? 1 : 0);
+
+                        let color = "bg-muted";
+                        if (strength >= level) {
+                          if (strength <= 2) color = "bg-red-500";
+                          else if (strength === 3) color = "bg-yellow-500";
+                          else color = "bg-green-500";
+                        }
+
+                        return (
+                          <div
+                            key={level}
+                            className={`flex-1 rounded-full transition-all duration-300 ${color}`}
+                          />
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-muted-foreground text-right">
+                      {["Weak", "Fair", "Good", "Strong"][
+                        Math.max(0, Math.min(3, ((password.length >= 8 ? 1 : 0) +
+                          (/[A-Z]/.test(password) ? 1 : 0) +
+                          (/[0-9]/.test(password) ? 1 : 0) +
+                          (/[^A-Za-z0-9]/.test(password) ? 1 : 0)) - 1))
+                      ]}
+                    </p>
+                  </div>
+                )}
+
+                {isSignUp && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
+                  </p>
+                )}
               </div>
 
               {!isSignUp && (

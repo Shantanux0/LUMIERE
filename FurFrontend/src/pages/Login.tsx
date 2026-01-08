@@ -9,7 +9,7 @@ import heroImage from "@/assets/hero-living-room.jpg";
 import { useAuthStore } from "@/store/authStore";
 import { useToast } from "@/hooks/use-toast";
 
-const fadeInUp = {
+const fadeInUp: any = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -18,7 +18,7 @@ const fadeInUp = {
   }
 };
 
-const staggerContainer = {
+const staggerContainer: any = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,

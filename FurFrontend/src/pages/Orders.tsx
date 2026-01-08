@@ -54,37 +54,47 @@ const Orders = () => {
                             <p className="text-luxury mb-12">Track and manage your orders</p>
 
                             <div className="space-y-4">
-                                {orders.map((order, index) => (
-                                    <motion.div
-                                        key={order.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className="border border-border rounded-lg p-6 hover:border-foreground transition-colors"
-                                    >
-                                        <div className="flex items-start justify-between mb-4">
-                                            <div>
-                                                <h3 className="font-serif text-xl mb-1">#{order.orderNumber.substring(0, 8).toUpperCase()}</h3>
-                                                <p className="text-sm text-muted-foreground">{new Date(order.orderDate).toLocaleDateString()}</p>
-                                            </div>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Delivered' || order.status === 'COMPLETED'
-                                                ? 'bg-green-100 text-green-800'
-                                                : order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
-                                                }`}>
-                                                {order.status}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center justify-between pt-4 border-t border-border">
-                                            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                                                <span className="flex items-center gap-2">
-                                                    <Package className="w-4 h-4" />
-                                                    {order.orderItems?.length || 0} items
+                                {Array.isArray(orders) && orders.length > 0 ? (
+                                    orders.map((order, index) => (
+                                        <motion.div
+                                            key={order.id || index}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: index * 0.1 }}
+                                            className="border border-border rounded-lg p-6 hover:border-foreground transition-colors"
+                                        >
+                                            <div className="flex items-start justify-between mb-4">
+                                                <div>
+                                                    <h3 className="font-serif text-xl mb-1">
+                                                        #{order?.orderNumber ? order.orderNumber.substring(0, 8).toUpperCase() : 'NO-ID'}
+                                                    </h3>
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {order?.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'Date N/A'}
+                                                    </p>
+                                                </div>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Delivered' || order.status === 'COMPLETED'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                                                    }`}>
+                                                    {order.status}
                                                 </span>
-                                                <span className="font-medium text-foreground">${order.totalAmount}</span>
                                             </div>
-                                        </div>
-                                    </motion.div>
-                                ))}
+                                            <div className="flex items-center justify-between pt-4 border-t border-border">
+                                                <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                                                    <span className="flex items-center gap-2">
+                                                        <Package className="w-4 h-4" />
+                                                        {order.orderItems?.length || 0} items
+                                                    </span>
+                                                    <span className="font-medium text-foreground">${order.totalAmount}</span>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))
+                                ) : (
+                                    <div className="text-center py-10 text-muted-foreground">
+                                        No orders found.
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     </div>

@@ -2,5 +2,6 @@
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/controller/OrderController.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/entity/Order.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/entity/OrderItem.java
+/Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/entity/OrderStatus.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/repository/OrderRepository.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/order-service/src/main/java/com/lumiere/order/service/OrderService.java

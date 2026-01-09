@@ -1,6 +1,7 @@
 com/lumiere/order/repository/OrderRepository.class
 com/lumiere/order/entity/OrderItem$OrderItemBuilder.class
 com/lumiere/order/entity/OrderItem.class
+com/lumiere/order/entity/OrderStatus.class
 com/lumiere/order/OrderServiceApplication.class
 com/lumiere/order/entity/Order$OrderBuilder.class
 com/lumiere/order/controller/OrderController.class

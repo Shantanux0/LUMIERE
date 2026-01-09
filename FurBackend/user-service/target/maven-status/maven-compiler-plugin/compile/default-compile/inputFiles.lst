@@ -1,4 +1,5 @@
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/user-service/src/main/java/com/lumiere/user/UserServiceApplication.java
+/Users/shantanukale/Downloads/E-com Furniture/FurBackend/user-service/src/main/java/com/lumiere/user/config/SecurityConfig.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/user-service/src/main/java/com/lumiere/user/controller/AuthController.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/user-service/src/main/java/com/lumiere/user/controller/UserController.java
 /Users/shantanukale/Downloads/E-com Furniture/FurBackend/user-service/src/main/java/com/lumiere/user/entity/User.java
